@@ -14,32 +14,32 @@
  * 
  * 
  * ;; no args it returns a list of both cap touch devices
- * > (read-touch)
+ * > (touchpads)
  * (547 789)
  * 
  * ;; an argument it returns the value of the respective device
- * > (read-touch 1)
+ * > (touchpads 1)
  * 547
  *
  * ;; an argument it returns the value of the respective device
- * > (read-touch 2)
+ * > (touchpads 2)
  * 789
  * 
  * ;; are either being touched?
- * (apply max (read-touch))
+ * (apply max (touchpads))
  * 
  * ;; test loop
- * (loop (format t "QT1: ~a  QT2:~a~%" (read-touch 1) (read-touch 2)) (delay 100))
+ * (loop (format t "QT1: ~a  QT2:~a~%" (touchpads 1) (touchpads 2)) (delay 100))
  * 
  * ;; on error it rerturns 0
- * > (read-touch)
+ * > (touchpads)
  * ERROR: Failed to start QT
  * (0 0)
  * 
- * > (read-touch 89)
+ * > (touchpads 89)
  * 0
  * 
- * > (read-touch 1 2 3)
+ * > (touchpads 1 2 3)
  * 0
  * 
  */
@@ -84,21 +84,36 @@ object *fn_readtouch (object *args, object *env) {
 }
 
 // Symbol names
-const char stringreadtouch[] PROGMEM = "read-touch";
+const char stringreadtouch[] PROGMEM = "touchpads";
 
 // Documentation strings
-const char docnow[] PROGMEM = "(read-touch [number])\n"
+const char doctouch[] PROGMEM = "(touchpads [number])\n"
 "Returns the capacitive touch reading.\n"
 "With no arguments it returns a list of all readings, otherwise device number 1 or 2.\n";
 
 // Symbol lookup table
 const tbl_entry_t lookup_table2[] PROGMEM = {
-  { stringreadtouch, fn_readtouch, 0203, docnow },
+  { stringreadtouch, fn_readtouch, 0203, doctouch },
+
+  // NeoPixel defs here
+  { stringPixelsBegin, fn_PixelsBegin, 0200, docPixelsBegin },
+  { stringPixelsClear, fn_PixelsClear, 0200, docPixelsClear },
+  { stringPixelsFill, fn_PixelsFill, 0203, docPixelsFill },
+  { stringPixelsSetPixelColor, fn_PixelsSetPixelColor, 0225, docPixelsSetPixelColor },
+  { stringPixelsColor, fn_PixelsColor, 0234, docPixelsColor },
+  { stringPixelsColorHSV, fn_PixelsColorHSV, 0233, docPixelsColorHSV },
+  { stringPixelsShow, fn_PixelsShow, 0200, docPixelsShow },
+  { stringPixelsRainbow, fn_PixelsRainbow, 0205, docPixelsRainbow },
+
 };
 
 // Table cross-reference functions
 
-tbl_entry_t *tables[] = {lookup_table, lookup_table2};
+/*
+ * HACK alert: oddly only 2 lookup tables work, combined NeoPixel with this
+ */
+
+tbl_entry_t *tables[] = { lookup_table, lookup_table2 };
 const unsigned int tablesizes[] = { arraysize(lookup_table), arraysize(lookup_table2) };
 
 const tbl_entry_t *table (int n) {

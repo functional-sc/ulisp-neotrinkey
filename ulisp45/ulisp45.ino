@@ -8,7 +8,7 @@
 
 
 // Lisp Library
-const char LispLibrary[] PROGMEM = "";
+//const char LispLibrary[] PROGMEM = "";
 
 // Compile options
 
@@ -17,15 +17,15 @@ const char LispLibrary[] PROGMEM = "";
 // #define printgcs
 // #define sdcardsupport
 // #define gfxsupport
-// #define lisplibrary
-#define assemblerlist
+#define lisplibrary
+// #define assemblerlist
 // #define lineeditor
 // #define vt100
 #define extensions
 
 // Includes
 
-// #include "LispLibrary.h"
+#include "LispLibrary.h"
 #include <setjmp.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -7426,7 +7426,7 @@ void setup () {
   initenv();
   initsleep();
   initgfx();
-  pfstring(PSTR("uLisp 4.5 "), pserial); pln(pserial);
+  pfstring(PSTR("\nuLisp 4.5 by David Johnson-Daves release LISPNYC-24-03\n  AdaFruit NeoTrinkey Edition\n    extensions: NeoPixel, TouchPad\n     libraries: Managed State Event Loop\n  http://www.lisp.nyc/ulisp\n\n  options:"), pserial); pln(pserial);
 }
 
 // Read/Evaluate/Print loop
