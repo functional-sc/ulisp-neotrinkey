@@ -61,7 +61,12 @@ On Chromebooks you'll need to reconnect the device.  Reinsert and when
 *"USB device detected"* pops up in the notifications click on 
 *"connect to Linux"* about 3 times.
 
-### USEAGE
+### USING
+
+TODO
+* foo
+* bar
+* baz
 
 ### BUILDING
 
