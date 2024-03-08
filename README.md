@@ -57,9 +57,9 @@ NeoTrinkey, then bring up the serial monitor via *Tools -> Serial Monitor*
 
 ### CONNECTING - CHROMEBOOK
 
-On Chromebooks you'll need to reconnect the device.  Reinsret and when 
+On Chromebooks you'll need to reconnect the device.  Reinsert and when 
 *"USB device detected"* pops up in the notifications click on 
-*"connect to Linux"* about 3 times.  
+*"connect to Linux"* about 3 times.
 
 ### USEAGE
 
