@@ -70,10 +70,11 @@ TODO
 
 ### BUILDING
 
-Building the image is pretty complicated because to use both the buttons AND
-the neo-pixel lights you need to download the Arduino Libraries, modify them
-by hand and only then you can create a fully-functional image to upload onto
-your NeoTrinkey board.
+Building the image is tricky because you have to manually tweak the Arduino 
+Libraries to make sure both the buttons and the neo-pixel lights work together.
+
+Only then you can create a fully-functional image to upload onto your 
+NeoTrinkey board.
 
 * [Building Instructions](docs/uLisp-build.md)
 
