@@ -63,7 +63,7 @@ On Chromebooks you'll need to reconnect the device.  Reinsert and when
 
 ### USING
 
-Please see (http://www.lisp.nyc/ulisp)[www.lisp.nyc/ulisp]
+Please see [www.lisp.nyc/ulisp](http://www.lisp.nyc/ulisp)
 
 ### BUILDING
 
