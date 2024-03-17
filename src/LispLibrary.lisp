@@ -4,6 +4,8 @@
 ;; confuse the loader.
 ;;
 
+(format t "  Lisp Library options:~%")
+
 (if (not (and (boundp 'feature-event-loop)
               feature-event-loop))
     (progn
@@ -92,12 +94,6 @@
       
       (defvar demo:user "there")
 
-      (defvar demo:colors 
-        (list (to-color 4 0 0) 
-              (to-color 0 4 0) 
-              (to-color 0 0 4) 
-              (to-color 2 0 1)))
-        
       (defvar demo:lambda-art '(""
                                 "  ##########"
                                 "  #.........#" 
@@ -140,22 +136,29 @@
 
       (defvar demo:type-contact (lambda (x) (format t "~%Enter ~~ to use LISP      www.lisp.nyc/ulisp~%~%")))
 
-      (defvar demo:timed-fns
-        (list
-         (list  500    demo:disp-colors        demo:colors                 nil)
-         (list  500    demo:type-ascii-art     demo:lambda-art             nil)
-         (list 8000    demo:type-contact       nil                         nil)
-         (list 2000    demo:make-random-color  nil                         'rnd-color)
-         (list   10    demo:flash-on-touch     (demo:make-random-color t)  'rnd-color) ))
 
-      (defun demo:run-events ()
-        (pixels-begin)
-        (run-event-loop demo:timed-fns) )
+      (defun demo:run-events (&optional colors)
+         (if (not colors)
+             (demo:run-events (list (to-color 4 0 0) 
+                                    (to-color 0 4 0) 
+                                    (to-color 0 0 4) 
+                                    (to-color 2 0 1))))
+         (pixels-begin)
+         (run-event-loop
+          (list
+           (list  500    demo:disp-colors        colors                      nil)
+           (list  500    demo:type-ascii-art     demo:lambda-art             nil)
+           (list 8000    demo:type-contact       nil                         nil)
+           (list 2000    demo:make-random-color  nil                         'rnd-color)
+           (list   10    demo:flash-on-touch     (demo:make-random-color t)  'rnd-color) ) ))
+      
       ))
 
 (if (and (boundp 'feature-demo)
          feature-demo)
-    (demo:run-events))
+    (if (= 20 (length (globals)))
+        (demo:run-events)
+        (format t "  To run demo evaluate (demo:run-events)~%")))
 
 (if (not (boundp 'feature-demo))
     (progn
