@@ -63,10 +63,7 @@ On Chromebooks you'll need to reconnect the device.  Reinsert and when
 
 ### USING
 
-TODO
-* foo
-* bar
-* baz
+Please see (http://www.lisp.nyc/ulisp)[www.lisp.nyc/ulisp]
 
 ### BUILDING
 
@@ -77,4 +74,3 @@ Only then you can create a fully-functional image to upload onto your
 NeoTrinkey board.
 
 * [Building Instructions](docs/uLisp-build.md)
-
