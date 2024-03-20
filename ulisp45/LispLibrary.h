@@ -1,6 +1,12 @@
+/*
+ * generated from LispLibrary.lisp using convert-lisp-lib-to-include.sh
+ */
+
 const char LispLibrary[] PROGMEM = R"lisplibrary(
 
-;; comments confuse uLisp, see README.md
+
+
+
 
 (format t "  Lisp Library options:~%")
 
@@ -73,14 +79,12 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
                (if (listp p0) ; list of colors or single color?
                    (dotimes (n (length p0)) (pixels-set-pixel-color n (nth n p0)))
                    (pixels p0 p0 p0 p0) )) 
-              ((null p3) (pixels (to-color p0 p1 p2))) ;; 3 args - set to rgb
               (t         (progn (pixels-set-pixel-color 0 p0)
                                 (pixels-set-pixel-color 1 p1)
                                 (pixels-set-pixel-color 2 p2)
                                 (pixels-set-pixel-color 3 p3) )))
         (pixels-show))
       ))
-
 
 (if (not (and (boundp 'feature-demo)
               (not (null feature-demo))))
@@ -90,8 +94,6 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
     (progn
       (format t "    enabled  feature-demo~%")
       
-      (defvar demo:user "there")
-
       (defvar demo:lambda-art '(""
                                 "  ##########"
                                 "  #.........#" 
@@ -112,28 +114,36 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
         (if (zerop (random (length l))) l
             (demo:rotate-random (demo:rotate l))))
 
-      (defvar demo:type-user      (lambda (cnt) (dotimes (n (abs cnt)) (princ " ")) (format t "Hello ~a!~%" user) (if (= 7 cnt) -6 (1+ cnt))))
+      (defvar demo:type-ascii-art
+        (lambda (list-of-lines)
+          (format t "~a~%" (car list-of-lines))
+          (demo:rotate list-of-lines)))
 
-      (defvar demo:type-ascii-art (lambda (list-of-lines) (format t "~a~%" (car list-of-lines)) (demo:rotate list-of-lines)))
+      (defvar demo:make-random-color
+        (lambda (x)
+          (let ((l (demo:rotate-random (list (+ 16 (random 32))
+                                             (+ 4 (random 8))
+                                             (random 4)))))
+            (to-color (nth 0 l) (nth 1 l) (nth 2 l)))))
 
-      (defvar demo:make-random-color (lambda (x) (let ((l (demo:rotate-random (list (+ 16 (random 32)) (+ 4 (random 8)) (random 4)))))
-                                              (to-color (nth 0 l) (nth 1 l) (nth 2 l)))))
-
-      (defvar demo:disp-colors  (lambda (lst) (pixels (nth 0 lst) (nth 1 lst) (nth 2 lst) (nth 3 lst)) (demo:rotate lst) ))
+      (defvar demo:disp-colors
+        (lambda (lst)
+          (pixels (nth 0 lst) (nth 1 lst) (nth 2 lst) (nth 3 lst))
+          (demo:rotate lst) ))
 
       (defvar demo:flash-on-touch
-        (lambda (c)
+        (lambda (color)
           (when (< 500 (touchpads 2))
-            (pixels-set-pixel-color 0 c)
-            (pixels-set-pixel-color 1 c))
+            (pixels-set-pixel-color 0 color)
+            (pixels-set-pixel-color 1 color))
           (when (< 500 (touchpads 1))
-            (pixels-set-pixel-color 2 c)
-            (pixels-set-pixel-color 3 c))
+            (pixels-set-pixel-color 2 color)
+            (pixels-set-pixel-color 3 color))
           (pixels-show)
-          c))
+          color))
 
-      (defvar demo:type-contact (lambda (x) (format t "~%Enter ~~ to use LISP      www.lisp.nyc/ulisp~%~%")))
-
+      (defvar demo:type-contact
+        (lambda (x) (format t "~%Enter ~~ to use LISP      www.lisp.nyc/ulisp~%~%")))
 
       (defun demo:run-events (&optional colors)
          (if (not colors)
@@ -154,7 +164,7 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
 
 (if (and (boundp 'feature-demo)
          feature-demo)
-    (if (= 20 (length (globals)))
+    (if (= 18 (length (globals)))
         (demo:run-events)
         (format t "  To run demo evaluate (demo:run-events)~%")))
 
@@ -171,6 +181,7 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
       (pixels-set-pixel-color 0 0)
       (pixels-show)
       (save-image (lambda() 'foo)) ))
+
 
 
 

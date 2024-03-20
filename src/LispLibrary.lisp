@@ -1,11 +1,16 @@
 
 ;;
-;; Note: copied directly into LispLibrary.h but without comments.  Comments
+;; This is copied into LispLibrary.h but without comments.  Comments
 ;; confuse the loader.
 ;;
-
+;; Use utils/convert-lisp-lib-to-include.sh to do the conversion.
+;;
 (format t "  Lisp Library options:~%")
 
+;;
+;; Optionaly define functions based on features selected.  Looks for a
+;; bound AND true variable.
+;;
 (if (not (and (boundp 'feature-event-loop)
               feature-event-loop))
     (progn
@@ -14,6 +19,10 @@
     (progn
       (format t "    enabled  feature-event-loop~%")
 
+      ;;
+      ;; Copied from the Managed State Event Loop
+      ;;  https://github.com/functional-sc/ulisp-managed-state-event-loop
+      ;;
       (defun wrap-fn-in-time (number-of-millis fn)
         (let ((next-time 0)) 
           (lambda (current-time state)
@@ -51,6 +60,9 @@
                                                                (aref state-offset-array i) ))) ))))
       )) 
 
+;;
+;; General purpose functions to make your life easier using 'feature-extra'
+;;
 (if (not (and (boundp 'feature-extras)
               (not (null feature-extras))))
     (progn
@@ -83,7 +95,12 @@
         (pixels-show))
       ))
 
-
+;;
+;; The demo are not general-purpose functions and are scoped using CL's
+;; package syntax:
+;;
+;;   demo:foo
+;;
 (if (not (and (boundp 'feature-demo)
               (not (null feature-demo))))
     (progn
@@ -92,8 +109,6 @@
     (progn
       (format t "    enabled  feature-demo~%")
       
-      (defvar demo:user "there")
-
       (defvar demo:lambda-art '(""
                                 "  ##########"
                                 "  #.........#" 
@@ -108,35 +123,77 @@
                                 "#....#      #.......#"
                                 "#####       #########" "" "" ""))
 
+      ;; rotate a list
       (defun demo:rotate (l) (append (cdr l) (cons (car l) ())))
 
+      ;; rotate a list a random number of time, this is good for random colors
       (defun demo:rotate-random (l)
         (if (zerop (random (length l))) l
             (demo:rotate-random (demo:rotate l))))
 
-      (defvar demo:type-user      (lambda (cnt) (dotimes (n (abs cnt)) (princ " ")) (format t "Hello ~a!~%" user) (if (= 7 cnt) -6 (1+ cnt))))
+      ;;
+      ;; Output one line of the passed in list-of-lines and rotate the list
+      ;; for the next managed state event loop iteration.
+      ;;
+      (defvar demo:type-ascii-art
+        (lambda (list-of-lines)
+          (format t "~a~%" (car list-of-lines))
+          (demo:rotate list-of-lines)))
 
-      (defvar demo:type-ascii-art (lambda (list-of-lines) (format t "~a~%" (car list-of-lines)) (demo:rotate list-of-lines)))
+      ;;
+      ;; If colors are too close togther they result in washed-out white. We
+      ;; make an attempt to select for bold colors by forcing wide differences.
+      ;;
+      ;; The returned color is just random, future releases may slowly
+      ;; transition between colors but for now the incoming color is ignored.
+      ;;
+      ;; This is called through the managed state event loop.
+      ;;
+      (defvar demo:make-random-color
+        (lambda (x)
+          (let ((l (demo:rotate-random (list (+ 16 (random 32))
+                                             (+ 4 (random 8))
+                                             (random 4)))))
+            (to-color (nth 0 l) (nth 1 l) (nth 2 l)))))
 
-      (defvar demo:make-random-color (lambda (x) (let ((l (demo:rotate-random (list (+ 16 (random 32)) (+ 4 (random 8)) (random 4)))))
-                                              (to-color (nth 0 l) (nth 1 l) (nth 2 l)))))
+      ;;
+      ;; Display the colors and rotate the list for the next managed state
+      ;; event loop iteration.
+      ;;
+      (defvar demo:disp-colors
+        (lambda (lst)
+          (pixels (nth 0 lst) (nth 1 lst) (nth 2 lst) (nth 3 lst))
+          (demo:rotate lst) ))
 
-      (defvar demo:disp-colors  (lambda (lst) (pixels (nth 0 lst) (nth 1 lst) (nth 2 lst) (nth 3 lst)) (demo:rotate lst) ))
-
+      ;;
+      ;; Individually light up pixels based on wich button is pressed using
+      ;; lower-level functions and not (pixels) so as not to overwrite it.
+      ;;
+      ;; Using the Managed State Event Loop and passing back out the color
+      ;; which is modified in another function.
+      ;;
       (defvar demo:flash-on-touch
-        (lambda (c)
+        (lambda (color)
           (when (< 500 (touchpads 2))
-            (pixels-set-pixel-color 0 c)
-            (pixels-set-pixel-color 1 c))
+            (pixels-set-pixel-color 0 color)
+            (pixels-set-pixel-color 1 color))
           (when (< 500 (touchpads 1))
-            (pixels-set-pixel-color 2 c)
-            (pixels-set-pixel-color 3 c))
+            (pixels-set-pixel-color 2 color)
+            (pixels-set-pixel-color 3 color))
           (pixels-show)
-          c))
+          color))
 
-      (defvar demo:type-contact (lambda (x) (format t "~%Enter ~~ to use LISP      www.lisp.nyc/ulisp~%~%")))
+      ;;
+      ;; Called through the managed state event loop, but no state is required
+      ;; for this, just timing.
+      ;;
+      (defvar demo:type-contact
+        (lambda (x) (format t "~%Enter ~~ to use LISP      www.lisp.nyc/ulisp~%~%")))
 
-
+      ;;
+      ;; Top-level function of the demo that statrs the managed state event
+      ;; loop.  If no color list is passed call self with default colors.
+      ;;
       (defun demo:run-events (&optional colors)
          (if (not colors)
              (demo:run-events (list (to-color 4 0 0) 
@@ -154,12 +211,27 @@
       
       ))
 
+;;
+;; do not run the demo if extra functions are defined, assuming if someone
+;; created extra functions they would have run from save-image
+;;
 (if (and (boundp 'feature-demo)
          feature-demo)
-    (if (= 20 (length (globals)))
+    (if (= 18 (length (globals)))
         (demo:run-events)
         (format t "  To run demo evaluate (demo:run-events)~%")))
 
+;;
+;; If feature-demo is unbound, define it as true and the demo will run
+;; next time the device is booted.
+;;
+;; It takes about 6 seconds to get to here after the device is burned in
+;; so shine a single blue pixel to let operator know the device is completely
+;; programmed.
+;;
+;; On the NeoTrinkey, the defvars only stick if save-image is given a function
+;; I don't know why.
+;;
 (if (not (boundp 'feature-demo))
     (progn
       (defvar feature-demo t)
