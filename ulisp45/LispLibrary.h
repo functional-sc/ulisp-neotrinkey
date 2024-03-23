@@ -74,16 +74,17 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
               (ash (logand #x0000FF color)   0)))
 
       (defun pixels (&optional p0 p1 p2 p3)
-        (cond ((null p0) (pixels-clear)) ; 0 args - turn off
-              ((null p1) ; 1 args - set all to first
-               (if (listp p0) ; list of colors or single color?
-                   (dotimes (n (length p0)) (pixels-set-pixel-color n (nth n p0)))
-                   (pixels p0 p0 p0 p0) )) 
+        (cond ((null p0) (pixels-clear))
+              ((null p1) (if (listp p0) (dotimes (n (length p0)) (pixels-set-pixel-color n (nth n p0)))
+                             (pixels p0 p0 p0 p0) ))
+              ((null p2) (pixels (list p0 p1 p0 p1)))
+              ((null p3) (pixels (to-color p0 p1 p2))) 
               (t         (progn (pixels-set-pixel-color 0 p0)
                                 (pixels-set-pixel-color 1 p1)
                                 (pixels-set-pixel-color 2 p2)
                                 (pixels-set-pixel-color 3 p3) )))
         (pixels-show))
+      
       ))
 
 (if (not (and (boundp 'feature-demo)

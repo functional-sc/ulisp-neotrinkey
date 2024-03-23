@@ -81,18 +81,32 @@
               (ash (logand #x00FF00 color)  -8)  
               (ash (logand #x0000FF color)   0)))
 
+      ;;
+      ;; easily turn pixels on with minimal effort, support many options
+      ;;
+      ;; 0 args - turn them off
+      ;;   (pixels)
+      ;; 1 arg numeric - make them all the same color
+      ;;   (pixels (to-color 64 0 32))
+      ;; 1 arg list - set them to each color in the list
+      ;;   (pixels (list (to-color 64 0 0) (to-color 32 0 0) 0 0))
+      ;; 2 args - even/odd set the pixels to that color
+      ;; 3 args - treat the args as rgb and set all the lights to that color
+      ;;   (pixels 4 0 0)
+      ;; 4 args - set each pixel to it's respective color
+      ;;  (pixels 128 64 32 16)
       (defun pixels (&optional p0 p1 p2 p3)
-        (cond ((null p0) (pixels-clear)) ; 0 args - turn off
-              ((null p1) ; 1 args - set all to first
-               (if (listp p0) ; list of colors or single color?
-                   (dotimes (n (length p0)) (pixels-set-pixel-color n (nth n p0)))
-                   (pixels p0 p0 p0 p0) )) 
-              ((null p3) (pixels (to-color p0 p1 p2))) ;; 3 args - set to rgb
+        (cond ((null p0) (pixels-clear))
+              ((null p1) (if (listp p0) (dotimes (n (length p0)) (pixels-set-pixel-color n (nth n p0)))
+                             (pixels p0 p0 p0 p0) ))
+              ((null p2) (pixels (list p0 p1 p0 p1)))
+              ((null p3) (pixels (to-color p0 p1 p2))) 
               (t         (progn (pixels-set-pixel-color 0 p0)
                                 (pixels-set-pixel-color 1 p1)
                                 (pixels-set-pixel-color 2 p2)
                                 (pixels-set-pixel-color 3 p3) )))
         (pixels-show))
+      
       ))
 
 ;;
