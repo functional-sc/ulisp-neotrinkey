@@ -5,7 +5,7 @@
 1. Buy an [AdaFruit Neo Trinkey](https://www.adafruit.com/product/4870) and optionally a [USB-A to USB-C adapter](https://www.adafruit.com/product/5030)
 2. Install the [Arduino CLI](https://arduino.github.io/arduino-cli/)
 3. Download the latest [uLisp AdaFruit NeoTrinkey binary relase](./releases/)
-4. UnZip and upload the release to the Trinkey with the Arduino CLI using the [upload.sh script](./unix-utils/upload.sh). Your port may be different than `/dev/ttyACM0`.
+4. UnZip and upload the release to the Trinkey with the Arduino CLI using the [upload script](./utils/upload.sh). Your port may be different than `/dev/ttyACM0`.
 
 It shoud look something like this:
 ```sh
