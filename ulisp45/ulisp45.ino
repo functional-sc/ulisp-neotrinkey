@@ -7423,7 +7423,7 @@ void setup () {
   initenv();
   initsleep();
   initgfx();
-  pfstring(PSTR("\nuLisp 4.5 by David Johnson-Daves release LISPNYC-24-04\n  AdaFruit NeoTrinkey Edition\n    extensions: NeoPixel, TouchPad\n     libraries: Managed State Event Loop\n  http://www.lisp.nyc/ulisp\n"), pserial); pln(pserial);
+  pfstring(PSTR("\nuLisp 4.5 by David Johnson-Daves release LISPNYC-24-04-RC1\n  AdaFruit NeoTrinkey Edition\n    extensions: NeoPixel, TouchPad\n     libraries: Managed State Event Loop\n  http://www.lisp.nyc/ulisp\n"), pserial); pln(pserial);
 }
 
 // Read/Evaluate/Print loop
