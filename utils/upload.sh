@@ -10,5 +10,5 @@
 
 ./arduino-cli upload \
             -b adafruit:samd:adafruit_trinket_m0 \
-            -i ulisp45/ulisp45.ino.neotrinkey_m0.bin \
+            -i ./ulisp45.ino.neotrinkey_m0.bin \
             -p /dev/ttyACM0
