@@ -13,7 +13,8 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
 (if (not (and (boundp 'feature-event-loop)
               feature-event-loop))
     (progn
-      (format t "    disabled feature-event-loop~%") )
+      (format t "    disabled feature-event-loop~%")
+      (mapc makunbound '(wrap-fn-in-time list-to-array run-event-loop)))
 
     (progn
       (format t "    enabled  feature-event-loop~%")
@@ -58,10 +59,11 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
 (if (not (and (boundp 'feature-extras)
               (not (null feature-extras))))
     (progn
-      (format t "    disabled feature-extras~%") )
+      (format t "    disabled feature-extras~%")
+      (mapc makunbound '(to-color to-rgb pixels)) )
 
     (progn
-      (format t "    enabled  feature-extras~%")              
+      (format t "    enabled  feature-extras~%") 
                                                     
       (defun to-color (red green blue)
         (logxor (* #x010000 red)
@@ -84,13 +86,15 @@ const char LispLibrary[] PROGMEM = R"lisplibrary(
                                 (pixels-set-pixel-color 2 p2)
                                 (pixels-set-pixel-color 3 p3) )))
         (pixels-show))
-      
+
+      (pixels-begin)
       ))
 
 (if (not (and (boundp 'feature-demo)
               (not (null feature-demo))))
     (progn
-      (format t "    disabled feature-demo~%") )
+      (format t "    disabled feature-demo~%")
+      (mapc makunbound '(demo:lambda-art demo:rotate demo:rotate-random demo:type-ascii-art demo:make-random-color demo:disp-colors demo:flash-on-touch demo:type-contact demo:run-events)) )
 
     (progn
       (format t "    enabled  feature-demo~%")
