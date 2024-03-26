@@ -1,3 +1,6 @@
+
+;; include this in your .emacs file
+
 (setq ulisp-term-buffer-name "/dev/ttyACM0")
 
 (defun ulisp-eval-last-expression-in-term ()
