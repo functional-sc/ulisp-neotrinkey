@@ -26,14 +26,14 @@
 
 ;;
 ;; To address them individually, utilize the `(to-color)` function to
-;; generate distinct colors for each of the four Neo Pixels:
+;; generate distinct RGB colors for each of the four Neo Pixels:
 ;;
 
 (pixels 
-  (to-color 64 0 0)   ; first one red
-  (to-color 0 64 0)   ; second one green
-  (to-color 0 0 64)   ; third one blue
-  (to-color 64 0 32)) ; fourth one purple
+  (to-color 64 0 0)   
+  (to-color 0 64 0)   
+  (to-color 0 0 64)   
+  (to-color 64 0 32)) 
 
 ;;
 ;; Or  pass in a list of colors, in this case:
