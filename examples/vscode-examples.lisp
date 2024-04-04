@@ -40,8 +40,16 @@
 
 
 ;;
-;; OMG it's broken!  Eventually you will end up evaluating an
-;; expression with unmatched or mismatched parens.  Like this:
+;; OMG it's broken!  
+;;
+;; First check your connection settings and ensure you have the
+;; following selected:
+;;   * port          /dev/tty/AACM0       (this may vary)
+;;   * baud          9600
+;;   * Line ending   CRLF
+;;
+;; However you may up evaluating an expression with unmatched or 
+;; mismatched parens.  Like this:
 ;; 
 ;;   (+ 1 2 3
 ;; 
