@@ -8,7 +8,7 @@
 ;;
 ;; Personalize it by selecting the correct port.
 ;;
-;; Compliments will with paredit-mode!
+;; Works well with paredit-mode!
 ;;
 ;;
 ;; Start by running "M-x ulisp-setup-workspace"

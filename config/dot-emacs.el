@@ -20,7 +20,7 @@
   (split-window-right)
   (other-window 1)
 
-  (serial-term "/dev/ttyACM0" 9600)
+  (serial-term ulisp-term-buffer-name 9600)
   (term-line-mode)
 
   (other-window 1)
