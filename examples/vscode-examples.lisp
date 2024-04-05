@@ -1,5 +1,7 @@
 ;;;; Visual Studio Code Examples for uLisp
 
+;;; How to Hack with VS Code
+
 ;;
 ;; Remember to install the ulisp.code-profile, see the instructions 
 ;; at http://lisp.nyc/ulisp
@@ -37,58 +39,6 @@
                    (to-color 32 0 0) 
                    0                 
                    0))               
-
-
-;;
-;; OMG it's broken!  
-;;
-;; First check your connection settings and ensure you have the
-;; following selected:
-;;   * port          /dev/tty/AACM0       (this may vary)
-;;   * baud          9600
-;;   * Line ending   CRLF
-;;
-;; However you may up evaluating an expression with unmatched or 
-;; mismatched parens.  Like this:
-;; 
-;;   (+ 1 2 3
-;; 
-;; Fix it by sending closing parens and then you'll have the REPL
-;; prompt again:
-;; 
-;;   )))
-;; 
-;; it looks like this:
-;; 
-;;     1676> 
-;;     ---- Sent utf8 encoded message: "(+ 1 2 3" ----
-;;     (+ 1 2 3
-;;     ---- Sent utf8 encoded message: "(+ 4 5 6)" ----
-;;     (+ 4 5 6)
-;;     ---- Sent utf8 encoded message: ")))" ----
-;;     )
-;;     21
-;;     
-;;     1676> 
-;;     ---- Sent utf8 encoded message: "(+ 1 2 3)" ----
-;;     (+ 1 2 3)
-;;     6
-;;     
-;;     1676> 
-
-
-;;
-;; This is not a very sophicated evaluation procedure, it sends all code in a
-;; single line and it WILL get confused by an in-line comment because the 
-;; parens will never close.  You may have to reset the device, beware.
-;; 
-;; (defvar my-colors (list 
-;;                    (to-color 64 0 0) ; never try to 
-;;                    (to-color 32 0 0) ; evaluate a form
-;;                    0                 ; that has included
-;;                    0))               ; comments
-;; 
-;; 
 
 
 ;;
@@ -160,7 +110,7 @@
 
 ;; are either being touched?
 ;; above 500 seems about right
-(if (< 500 (apply max (touchpads)))
+(when (< 500 (apply max (touchpads)))
     (progn
       (format t "touched!")
       t))
@@ -190,3 +140,54 @@
 (save-image 'mydemo)
 
 (mydemo)
+
+
+;;
+;; OMG it's broken!  
+;;
+;; First check your connection settings and ensure you have the
+;; following selected:
+;;   * port          /dev/tty/AACM0       (this may vary)
+;;   * baud          9600
+;;   * Line ending   CRLF
+;;
+;; However you may end up evaluating an expression with unmatched or 
+;; mismatched parens.  Like this:
+;; 
+;;   (+ 1 2 3
+;; 
+;; Fix it by sending closing parens and then you'll have the REPL
+;; prompt again:
+;; 
+;;   )))
+;; 
+;; it looks like this:
+;; 
+;;     1676> 
+;;     ---- Sent utf8 encoded message: "(+ 1 2 3" ----
+;;     (+ 1 2 3
+;;     ---- Sent utf8 encoded message: "(+ 4 5 6)" ----
+;;     (+ 4 5 6)
+;;     ---- Sent utf8 encoded message: ")))" ----
+;;     )
+;;     21
+;;     
+;;     1676> 
+;;     ---- Sent utf8 encoded message: "(+ 1 2 3)" ----
+;;     (+ 1 2 3)
+;;     6
+;;     
+;;     1676> 
+
+;;
+;; This is not a very sophicated evaluation procedure, it sends all code in a
+;; single line and it WILL get confused by an in-line comment because the 
+;; parens will never close.  You may have to reset the device, beware.
+;; 
+;; (defvar my-colors (list 
+;;                    (to-color 64 0 0) ; never try to 
+;;                    (to-color 32 0 0) ; evaluate a form
+;;                    0                 ; that has included
+;;                    0))               ; comments
+
+(format t "Happy hacking ~a!~%" 'friend)
