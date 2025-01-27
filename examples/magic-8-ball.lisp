@@ -21,10 +21,10 @@
 
 (defvar *dim-color* 10)
 
-(defun is-green (color)
+(defun is-yes-color (color)
   (if (= *bright-color* (car (cdr (to-rgb color)))) t nil))
 
-(defun is-red (color)
+(defun is-no-color (color)
   (if (= *bright-color* (car (to-rgb color))) t nil))
 
 (defun get-sage ()
@@ -37,8 +37,8 @@
   (let ((yes-text   (list "It is certain" "It is decidedly so" "Without a doubt" "Yes definitely" "You may rely on it" "As I see it, yes" "Most likely" "Outlook good" "Yes" "Signs point to yes"))
         (maybe-text (list "Reply hazy, try again"  "Ask again later"  "Better not tell you now"  "Cannot predict now"))
         (no-text    (list "Don't count on it"  "My reply is no"  "My sources say no"  "Outlook not so good"  "Very doubtful")) )
-    (cond ((is-green color) (rand-nth yes-text))
-          ((is-red color)   (rand-nth no-text))
+    (cond ((is-yes-color color) (rand-nth yes-text))
+          ((is-no-color color)  (rand-nth no-text))
           (t                (rand-nth maybe-text)) )))
 
 (defun magic-8-ball ()
